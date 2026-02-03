@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>💌 Pour Lucy</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #ff6f91, #ff9671);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* CARTE CENTRALE */
+.container {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  text-align: center;
+  width: 90%;
+  max-width: 420px;
+  z-index: 2;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.container img {
+  width: 100%;
+  border-radius: 15px;
+  margin-bottom: 15px;
+}
+
+h1 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 17px;
+}
+
+/* BOUTONS */
+button {
+  padding: 12px 22px;
+  font-size: 16px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+#yes {
+  background: #ff4d6d;
+  color: white;
+}
+
+#no {
+  background: #ccc;
+  position: absolute;
+  z-index: 3;
+}
+
+/* COMPTE À REBOURS */
+#countdown {
+  font-size: 15px;
+  margin: 10px 0;
+  color: #ff4d6d;
+  font-weight: bold;
+}
+
+/* ROSES & CŒURS */
+.fall {
+  position: absolute;
+  font-size: 22px;
+  animation: fall 6s linear infinite;
+}
+
+@keyframes fall {
+  0% { top: -10%; opacity: 1; }
+  100% { top: 110%; opacity: 0; }
+}
+</style>
+</head>
+
+<body onclick="playMusic()">
+
+<!-- MUSIQUE -->
+<audio id="music" loop>
+  <source src="love.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+  <img src="photo.jpg" alt="Lucy et Mathys ❤️">
+  <h1 id="text"></h1>
+
+  <p>
+    Lucy,<br>
+    depuis que tu es entrée dans ma vie,<br>
+    tout a pris un autre sens ✨<br>
+    Alors aujourd’hui, j’ai une question très importante…
+  </p>
+
+  <div id="countdown"></div>
+
+  <p><strong>Veux-tu être ma Valentine ? 💖</strong></p>
+
+  <button id="yes" onclick="yes()">Oui 💘</button>
+</div>
+
+<button id="no">Non 🙃</button>
+
+<script>
+/* TEXTE QUI S'ÉCRIT */
+const message = "Pour toi, Lucy ❤️";
+let i = 0;
+function typeWriter() {
+  if (i < message.length) {
+    document.getElementById("text").innerHTML += message.charAt(i);
+    i++;
+    setTimeout(typeWriter, 80);
+  }
+}
+typeWriter();
+
+/* MUSIQUE AU PREMIER CLIC */
+let played = false;
+function playMusic() {
+  if (!played) {
+    document.getElementById("music").play();
+    played = true;
+  }
+}
+
+/* BOUTON NON QUI FUIT */
+const noBtn = document.getElementById("no");
+noBtn.addEventListener("mouseover", () => {
+  noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+  noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
+});
+
+/* FINAL 💥 */
+function yes() {
+  document.body.innerHTML = `
+    <div style="color:white;text-align:center;padding:40px;">
+      <h1>JE LE SAVAIS 🥰💖</h1>
+      <p>Lucy,</p>
+      <p>merci de rendre mes journées plus belles.</p>
+      <p>J’ai tellement hâte de partager<br>cette Saint-Valentin avec toi ❤️</p>
+      <p><strong>— Mathys</strong></p>
+    </div>
+  `;
+}
+
+/* COMPTE À REBOURS SAINT-VALENTIN */
+const targetDate = new Date("February 14, 2026 00:00:00").getTime();
+setInterval(() => {
+  const now = new Date().getTime();
+  const diff = targetDate - now;
+
+  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const m = Math.floor((diff / (1000 * 60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
+
+  document.getElementById("countdown").innerHTML =
+    `⏳ Plus que ${d}j ${h}h ${m}m ${s}s avant la Saint-Valentin ❤️`;
+}, 1000);
+
+/* CŒURS + ROSES QUI TOMBENT */
+setInterval(() => {
+  const el = document.createElement("div");
+  el.className = "fall";
+  el.innerHTML = Math.random() > 0.5 ? "❤️" : "🌹";
+  el.style.left = Math.random() * 100 + "vw";
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 6000);
+}, 250);
+</script>
+
+</body>
+</html>
